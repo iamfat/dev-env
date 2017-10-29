@@ -1,0 +1,18 @@
+version: '2'
+services:
+  mariadb:
+    container_name: mariadb
+    image: genee/mariadb
+    ports:
+      - 3306:3306/tcp
+    restart: always
+    privileged: true
+    volumes:
+      - ../common/localtime:/etc/localtime:ro
+      - ../common/tmp:/tmp
+      - ./etc/mysql:/etc/mysql
+      - mariadb:/var/lib/mysql
+
+volumes:
+  mariadb:
+    external: true
