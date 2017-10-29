@@ -11,3 +11,4 @@ gini:
     - ./etc/php7/php-fpm.d:/etc/php7/php-fpm.d:ro
     - ../..:/data
     - ./etc/profile.d/gini.sh:/etc/profile.d/zz_gini.sh:ro
+  working_dir: /data/gini-modules

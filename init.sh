@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 CONTAINER_DIR=$(dirname ${BASH_SOURCE[0]})
+CONTAINER_DIR=$(cd $CONTAINER_DIR|pwd)
 TRY_PREFIX="⏳ "
 DONE_PROMPT="   🍺  done."
 
@@ -15,7 +16,7 @@ echo ""
 
 # Pull Images
 echo "${TRY_PREFIX} Pulling Docker Images..."
-IMAGES='genee/gini-dev:alpine genee/redis genee/mariadb genee/nginx genee/node'
+IMAGES='genee/gini-dev:alpine genee/redis genee/mariadb genee/nginx node:alpine'
 for IMAGE in $IMAGES; do
     docker pull "${IMAGE}"
 done
@@ -33,3 +34,7 @@ unset MARIADB_EXISTS
 echo "${DONE_PROMPT}"
 echo ""
 
+echo "Please add following line to ~/.profile if you want to access node/npm/gini/composer command from the host."
+echo ""
+echo "  source ${CONTAINER_DIR}/dot_profile"
+echo ""

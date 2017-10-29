@@ -28,7 +28,13 @@ brew cask install font-hack-nerd-font
 
 ## 3. 安装开发环境
 ```bash
+# 通用数据目录
 mkdir -p $HOME/Codes/data
+# Gini模块目录
+mkdir -p $HOME/Codes/data/gini-modules
+# Node应用目录
+mkdir -p $HOME/Codes/data/node
+# 容器配置目录
 git clone https://github.com/iamfat/dev-containers $HOME/Codes/data/containers
 $HOME/Codes/data/containers/init.sh
 ```

@@ -1,0 +1,31 @@
+eval "$(fasd --init auto)"
+
+alias de='docker exec -it'
+
+GENEE_DATA_DIR=${GENEE_DATA_DIR:="${HOME}/Codes/data/"}
+GENEE_NODE_CONTAINER=${GENEE_NODE_CONTAINER:="node"}
+GENEE_GINI_CONTAINER=${GENEE_GINI_CONTAINER:="gini"}
+
+__docker_node_cmd() {
+  local VOLUME_PATH=${PWD#$GENEE_DATA_DIR}
+  local COMMAND="$@"
+  if [ $VOLUME_PATH == $PWD ]; then
+    VOLUME_PATH='node'
+  fi
+  docker exec -it ${GENEE_NODE_CONTAINER} sh -c "cd /data/${VOLUME_PATH} && ${COMMAND}"
+}
+
+__docker_gini_cmd() {
+  local VOLUME_PATH=${PWD#$GENEE_DATA_DIR}
+  local COMMAND="$@"
+  if [ $VOLUME_PATH == $PWD ]; then
+    VOLUME_PATH='gini-modules'
+  fi
+  docker exec -it ${GENEE_GINI_CONTAINER} sh -c "cd /data/${VOLUME_PATH} && ${COMMAND}"
+}
+
+# $HOME/Codes/data/node/xxxx
+alias npm='__docker_node_cmd npm'
+alias node='__docker_node_cmd node'
+alias gini='__docker_gini_cmd gini'
+alias composer='__docker_gini_cmd composer'
