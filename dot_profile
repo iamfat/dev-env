@@ -27,5 +27,9 @@ __docker_gini_cmd() {
 # $HOME/Codes/data/node/xxxx
 alias npm='__docker_node_cmd npm'
 alias node='__docker_node_cmd node'
+alias yarn='__docker_node_cmd yarn'
+alias mocha='__docker_node_cmd mocha'
+
 alias gini='__docker_gini_cmd gini'
 alias composer='__docker_gini_cmd composer'
+alias phpunit='__docker_gini_cmd phpunit'
