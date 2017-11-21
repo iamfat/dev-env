@@ -34,6 +34,15 @@ unset MARIADB_EXISTS
 echo "${DONE_PROMPT}"
 echo ""
 
+# Initialize Git Config
+if [ ! -f "${CONTAINER_DIR}/dot_gitconfig" ]; then
+    read -p "Your git user name: " GIT_USER_NAME && \
+    read -p "         and email: " GIT_USER_EMAIL && \
+    GIT_USER_NAME=${GIT_USER_NAME:='Nobody'} && \
+    GIT_USER_EMAIL=${GIT_USER_EMAIL:='nobody@geneegroup.com'} && \
+    printf "[user]\nname=%s\nemail=%s\n[color]\nui=auto\n" "$GIT_USER_NAME" "$GIT_USER_EMAIL" > "${CONTAINER_DIR}/dot_gitconfig"
+fi
+
 echo "Please add following line to ~/.profile if you want to access node/npm/gini/composer command from the host."
 echo ""
 echo "  source ${CONTAINER_DIR}/dot_profile"
