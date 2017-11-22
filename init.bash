@@ -47,3 +47,4 @@ echo "Please add following line to ~/.profile if you want to access node/npm/gin
 echo ""
 echo "  source ${CONTAINER_DIR}/dot_profile"
 echo ""
+
