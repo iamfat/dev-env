@@ -34,6 +34,7 @@ alias gulp='__docker_node_cmd gulp'
 alias grunt='__docker_node_cmd grunt'
 alias vue='__docker_node_cmd vue'
 alias babel-node='__docker_node_cmd babel-node'
+alias wepy='__docker_node_cmd wepy'
 
 alias gini='__docker_gini_cmd gini'
 alias composer='__docker_gini_cmd composer'
