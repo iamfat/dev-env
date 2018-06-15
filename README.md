@@ -35,6 +35,6 @@ mkdir -p $HOME/Codes/data/gini-modules
 # Node应用目录
 mkdir -p $HOME/Codes/data/node
 # 容器配置目录
-git clone https://github.com/iamfat/dev-containers $HOME/Codes/data/containers
+git clone https://github.com/iamfat/dev-env $HOME/Codes/data/containers
 bash $HOME/Codes/data/containers/init.bash
 ```
