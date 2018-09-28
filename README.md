@@ -15,18 +15,18 @@ xcode-select --install
 brew tap caskroom/cask
 ```
 
-## 2. 安装一些软件
+## 2. 安装一些支持软件
 ```bash
 # install fasd for fast directory locationing
 brew install fasd
 # install necessary softwares
-brew cask install iterm2 sequel-pro docker the-unarchiver virtualbox vagrant visual-studio-code
+brew cask install iterm2 sequel-pro docker the-unarchiver visual-studio-code
 # install fonts (optional)
 brew tap caskroom/fonts
 brew cask install font-hack-nerd-font
 ```
 
-## 3. 安装开发环境
+## 3. Web开发环境
 ```bash
 # 通用数据目录
 mkdir -p $HOME/Codes/data
@@ -37,4 +37,43 @@ mkdir -p $HOME/Codes/data/node
 # 容器配置目录
 git clone https://github.com/iamfat/dev-env $HOME/Codes/data/containers
 bash $HOME/Codes/data/containers/init.bash
+
+# 之后可以直接使用dg来操作gini容器, dn来操作node容器
+dg gini -v
+dn npm -v
+```
+## 4. 嵌入式安装环境
+我们使用VSCode+gdb+JLink进行调试
+```bash
+brew cask install gcc-arm-embedded
+brew cask install homebrew/cask-drivers/segger-jlink
+```
+在开发项目里需要配置VSCode的调试配置
+```json
+{
+    // demo file in .vscode/launch.json
+   "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "JLink Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/YOUR.elf",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/local/bin/arm-none-eabi-gdb",
+            "miDebuggerServerAddress": "localhost:2331"
+        }
+    ]
+}
+```
+使用JLink去开启调试程序
+```bash
+# 使用JLinkGDBServer开启远程gdb服务, 然后使用vscode连接
+JLinkGDBServer -device STM32F103CB -speed 500 -if swd -port 2331
 ```
