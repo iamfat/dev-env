@@ -72,8 +72,13 @@ brew cask install homebrew/cask-drivers/segger-jlink
     ]
 }
 ```
+GDB为了在VSCode调用必须经过代码签名, 请首先使用`钥匙链访问 > 证书助理 > 创建一个证书... ` 建立用于GDB的证书, 确保证书用途是用于`代码签名`, 然后生成证书后把证书移动到`系统`, 之后运行下列命令
+```bash
+# GDB是证书的名字, 你可以在创建证书时自行命名, 之后这里用对应的名字即可
+codesign -s GDB arm-none-eabi-gdb
+```
 使用JLink去开启调试程序
 ```bash
 # 使用JLinkGDBServer开启远程gdb服务, 然后使用vscode连接
 JLinkGDBServer -device STM32F103CB -speed 500 -if swd -port 2331
-```
+```·
