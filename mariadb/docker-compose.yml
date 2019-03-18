@@ -10,7 +10,7 @@ services:
     volumes:
       - ../common/localtime:/etc/localtime:ro
       - ../common/tmp:/tmp
-      - ./etc/mysql:/etc/mysql
+      - ./etc/my.cnf.d:/etc/my.cnf.d
       - mariadb:/var/lib/mysql
 
 volumes:
