@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-CONTAINER_DIR=$(dirname ${BASH_SOURCE[0]})
-CONTAINER_DIR=$(cd $CONTAINER_DIR && pwd)
+STACKS_DIR=$(dirname ${BASH_SOURCE[0]})
+STACKS_DIR=$(cd $STACKS_DIR && pwd)
 TRY_PREFIX="⏳ "
 DONE_PROMPT="🍺  done."
 
@@ -9,8 +9,8 @@ set -e
 
 # Initialize Common Files
 echo "${TRY_PREFIX} Initializing Common Files..."
-[ -f "${CONTAINER_DIR}/common/localtime" ] || cp /etc/localtime "${CONTAINER_DIR}/common"
-[ -d "${CONTAINER_DIR}/common/tmp" ] || mkdir -p "${CONTAINER_DIR}/common/tmp"
+[ -f "${STACKS_DIR}/common/localtime" ] || cp /etc/localtime "${STACKS_DIR}/common"
+[ -d "${STACKS_DIR}/common/tmp" ] || mkdir -p "${STACKS_DIR}/common/tmp"
 echo "   finished."
 
 # Pull Images
@@ -32,18 +32,22 @@ unset MARIADB_EXISTS
 echo "   finished."
 
 # Initialize Git Config
-if [ ! -f "${CONTAINER_DIR}/dot_gitconfig" ]; then
+if [ ! -f "${STACKS_DIR}/.gitconfig" ]; then
     read -p "Your git user name: " GIT_USER_NAME && \
     read -p "         and email: " GIT_USER_EMAIL && \
     GIT_USER_NAME=${GIT_USER_NAME:='Nobody'} && \
     GIT_USER_EMAIL=${GIT_USER_EMAIL:='nobody@geneegroup.com'} && \
-    printf "[user]\nname=%s\nemail=%s\n[color]\nui=auto\n" "$GIT_USER_NAME" "$GIT_USER_EMAIL" > "${CONTAINER_DIR}/dot_gitconfig"
+    printf "[user]\nname=%s\nemail=%s\n[color]\nui=auto\n" "$GIT_USER_NAME" "$GIT_USER_EMAIL" > "${STACKS_DIR}/web/.gitconfig"
+fi
+
+if [ ! -f "${STACKS_DIR}/.git-credentials" ]; then
+    touch "${STACKS_DIR}/.git-credentials"
 fi
 
 echo ""
 echo "Please add following line to ~/.profile if you want to access node/npm/gini/composer command from the host."
 echo ""
-echo "  source ${CONTAINER_DIR}/dot_profile"
+echo "  source ${STACKS_DIR}/.profile"
 echo ""
 
 echo "${DONE_PROMPT}"

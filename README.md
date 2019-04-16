@@ -29,14 +29,18 @@ brew cask install font-hack-nerd-font
 ## 3. Web开发环境
 ```bash
 # 通用数据目录
-mkdir -p $HOME/Codes/data
+mkdir -p "$HOME/Codes/data"
 # Gini模块目录
-mkdir -p $HOME/Codes/data/gini-modules
+mkdir -p "$HOME/Codes/data/gini-modules"
 # Node应用目录
-mkdir -p $HOME/Codes/data/node
+mkdir -p "$HOME/Codes/data/node"
 # 容器配置目录
-git clone https://github.com/iamfat/dev-env $HOME/Codes/data/containers
-bash $HOME/Codes/data/containers/init.bash
+git clone https://github.com/iamfat/dev-stacks "$HOME/Codes/data/@stacks"
+bash "$HOME/Codes/data/@stacks/init.bash"
+
+docker swarm init
+docker swarm join-token manager
+docker stack deploy --compose-file web/docker-compose.yml web
 
 # 之后可以直接使用dg来操作gini容器, dn来操作node容器
 dg gini -v

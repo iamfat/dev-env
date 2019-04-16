@@ -1,0 +1,67 @@
+version: '3'
+services:
+  nginx:
+    image: genee/nginx
+    ports:
+      - 80:80/tcp
+    volumes:
+      - ../common/tmp:/tmp
+      - ../common/localtime:/etc/localtime:ro
+      - ../..:/data:ro
+      - ./nginx/etc/nginx/default.d:/etc/nginx/default.d:ro
+      - ./nginx/etc/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/etc/nginx/include.d:/etc/nginx/include.d:ro
+      - ./nginx/var/log/nginx:/var/log/nginx:rw
+  gini:
+    image: genee/gini-dev:alpine
+    hostname: gini
+    volumes:
+      - ../common/localtime:/etc/localtime:ro
+      - ../common/tmp:/tmp
+      - ../..:/data:ro
+      - ../.gitconfig:/root/.gitconfig
+      - ../.git-credentials:/root/.git-credentials
+      - ../.ssh:/root/.ssh
+      - ./gini/etc/php7/php-fpm.d:/etc/php7/php-fpm.d:ro
+      - ./gini/etc/profile.d/gini.sh:/etc/profile.d/zz_gini.sh:ro
+      - ./gini/usr/local/share/composer/config.json:/usr/local/share/composer/config.json
+    working_dir: /data/gini-modules
+  node:
+    image: genee/node-dev
+    hostname: node
+    volumes:
+      - ../common/localtime:/etc/localtime:ro
+      - ../common/tmp:/tmp
+      - ../..:/data
+      - ../.gitconfig:/root/.gitconfig
+      - ../.git-credentials:/root/.git-credentials
+    working_dir: /data/node
+    command: 
+      - sh
+      - -c
+      - "while true; do sleep 5d; done"
+  mariadb:
+    image: genee/mariadb
+    hostname: mariadb
+    ports:
+      - 3306:3306/tcp
+    volumes:
+      - ../common/localtime:/etc/localtime:ro
+      - ../common/tmp:/tmp
+      - ./mariadb/etc/my.cnf.d:/etc/my.cnf.d
+      - mariadb:/var/lib/mysql
+  redis:
+    image: genee/redis
+    hostname: redis
+    volumes:
+    - ../common/localtime:/etc/localtime:ro
+    - ../common/tmp:/tmp
+
+volumes:
+  mariadb:
+    external: true
+
+networks:
+  default:
+    external:
+      name: dev

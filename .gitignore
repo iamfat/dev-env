@@ -1,3 +1,5 @@
-/nginx/etc/nginx/default.d
-/nginx/etc/nginx/include.d
 /common
+.DS*
+/.gitconfig
+/.git-credentials
+/.ssh/
