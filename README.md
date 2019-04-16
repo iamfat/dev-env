@@ -85,4 +85,4 @@ codesign -s GDB arm-none-eabi-gdb
 ```bash
 # 使用JLinkGDBServer开启远程gdb服务, 然后使用vscode连接
 JLinkGDBServer -device STM32F103CB -speed 500 -if swd -port 2331
-```·
+```
