@@ -18,7 +18,7 @@ services:
     volumes:
       - ../common/localtime:/etc/localtime:ro
       - ../common/tmp:/tmp
-      - ../..:/data:ro
+      - ../..:/data
       - ../.gitconfig:/root/.gitconfig
       - ../.git-credentials:/root/.git-credentials
       - ../.ssh:/root/.ssh
