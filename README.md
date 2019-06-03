@@ -42,10 +42,11 @@ docker swarm init
 docker swarm join-token manager
 docker stack deploy --compose-file web/docker-compose.yml web
 
-# 之后可以直接使用dg来操作gini容器, dn来操作node容器
+# 在克隆 gini 框架到 gini-modules 后并添加 .profile 脚本后可以直接使用dg来操作gini容器, dn来操作node容器
 dg gini -v
 dn npm -v
 ```
+
 ## 4. 嵌入式安装环境
 我们使用VSCode+gdb+JLink进行调试
 ```bash

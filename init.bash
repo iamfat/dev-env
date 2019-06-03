@@ -31,13 +31,22 @@ fi
 unset MARIADB_EXISTS
 echo "   finished."
 
+# Initialize dev
+echo "${TRY_PREFIX} Initializing dev network..."
+docker network inspect dev > /dev/null 2>&1 && DEV_EXISTS=1 || DEV_EXISTS=0
+if [ $DEV_EXISTS == 0 ]; then
+    docker network create -d overlay dev
+fi
+unset DEV_EXISTS
+echo "   finished."
+
 # Initialize Git Config
 if [ ! -f "${STACKS_DIR}/.gitconfig" ]; then
     read -p "Your git user name: " GIT_USER_NAME && \
     read -p "         and email: " GIT_USER_EMAIL && \
     GIT_USER_NAME=${GIT_USER_NAME:='Nobody'} && \
     GIT_USER_EMAIL=${GIT_USER_EMAIL:='nobody@geneegroup.com'} && \
-    printf "[user]\nname=%s\nemail=%s\n[color]\nui=auto\n" "$GIT_USER_NAME" "$GIT_USER_EMAIL" > "${STACKS_DIR}/web/.gitconfig"
+    printf "[user]\nname=%s\nemail=%s\n[color]\nui=auto\n" "$GIT_USER_NAME" "$GIT_USER_EMAIL" > "${STACKS_DIR}/.gitconfig"
 fi
 
 if [ ! -f "${STACKS_DIR}/.git-credentials" ]; then
