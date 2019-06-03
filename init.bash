@@ -13,6 +13,12 @@ echo "${TRY_PREFIX} Initializing Common Files..."
 [ -d "${STACKS_DIR}/common/tmp" ] || mkdir -p "${STACKS_DIR}/common/tmp"
 echo "   finished."
 
+# Initialize Some Files for Container 
+echo "${TRY_PREFIX} Initializing Some Files for Container..."
+[ -d "${STACKS_DIR}/.ssh" ] || mkdir -p "${STACKS_DIR}/.ssh"
+[ -d "${STACKS_DIR}/web/nginx/var/log/nginx" ] || mkdir -p "${STACKS_DIR}/web/nginx/var/log/nginx"
+echo "   finished."
+
 # Pull Images
 echo "${TRY_PREFIX} Pulling Docker Images..."
 IMAGES='genee/gini-dev:alpine genee/redis genee/mariadb genee/nginx node:alpine'
