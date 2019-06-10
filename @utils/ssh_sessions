@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+while getopts 'u:h' OPT; do
+    case $OPT in
+        u)
+            KEYS_USER="$OPTARG";;
+        ?)
+            echo "Usage: ssh_sessions [-u user] < /var/log/auth.log"
+    esac
+done
+  
+shift $(($OPTIND - 1))
+
+IFS=$'\n'
+
+KEYS_USER="${KEYS_USER:-$(whoami)}"
+KEYS_HOME=$(sh -c "echo ~$KEYS_USER")
+FILE="${2:-$KEYS_HOME/.ssh/authorized_keys}"
+declare -A HASH2USER
+if [ -f "$FILE" ]; then
+    for LINE in $(cat "$FILE"); do
+        if [[ -n $LINE && ${LINE###} = $LINE ]]; then
+            HASH_OUTPUT=$(ssh-keygen -l -f /dev/stdin <<< "$LINE")
+            HASH=$(echo $HASH_OUTPUT|cut -f2 -d ' ')
+            HASH_USER=$(echo $HASH_OUTPUT|cut -f3 -d ' ')
+            HASH2USER["$HASH"]="$HASH_USER"
+        fi
+    done
+else
+    echo "File $FILE not found"
+    exit
+fi
+
+declare -A SESSION_PREFIX
+declare -A SESSION_START
+declare -A SESSION_END
+USER=$(whoami)
+for LINE in $(grep sshd| egrep 'publickey|session closed'); do
+    # Accepted publickey for (\\w+) from (\\w+) port (\\d+) (?:ssh1|ssh2): (\\w+) (\\S+)
+    REGEX='sshd\[([[:digit:]]+)\]: Accepted publickey for ([[:alnum:]]+) from ([[:alnum:].]+) port ([[:digit:]]+) (ssh1|ssh2): ([[:alnum:]]+) (.+)'
+    if [[ $LINE =~ $REGEX ]]; then
+        SID=${BASH_REMATCH[1]}
+        # USER=${BASH_REMATCH[2]}
+        HOST=${BASH_REMATCH[3]}
+        # PORT=${BASH_REMATCH[4]}
+        KEY_TYPE=${BASH_REMATCH[6]}
+        KEY_HASH=${BASH_REMATCH[7]}
+        KEY_OWNER=${HASH2USER[$KEY_HASH]}
+        SESSION_PREFIX[$SID]=$(printf "%s\tfrom\t%s" "$KEY_OWNER" "$HOST")
+        SESSION_START[$SID]=${LINE:0:15}
+    fi
+
+    REGEX='sshd\[([[:digit:]]+)\]: .+ session closed'
+    if [[ $LINE =~ $REGEX ]]; then
+        SID=${BASH_REMATCH[1]}
+        SESSION_END[$SID]=${LINE:0:15}
+    fi
+done
+
+for SID in "${!SESSION_PREFIX[@]}"; do
+    printf "%6s\t%s\tat %s - %s\n" "$SID" "${SESSION_PREFIX[$SID]}" "${SESSION_START[$SID]}" "${SESSION_END[$SID]}"
+done | column -t -s $'\t'
+
