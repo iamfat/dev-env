@@ -13,6 +13,12 @@ echo "${TRY_PREFIX} Initializing Common Files..."
 [ -d "${STACKS_DIR}/common/tmp" ] || mkdir -p "${STACKS_DIR}/common/tmp"
 echo "   finished."
 
+# Initialize Some Files for Container 
+echo "${TRY_PREFIX} Initializing Some Files for Container..."
+[ -d "${STACKS_DIR}/.ssh" ] || mkdir -p "${STACKS_DIR}/.ssh"
+[ -d "${STACKS_DIR}/web/nginx/var/log/nginx" ] || mkdir -p "${STACKS_DIR}/web/nginx/var/log/nginx"
+echo "   finished."
+
 # Pull Images
 echo "${TRY_PREFIX} Pulling Docker Images..."
 IMAGES='genee/gini-dev:alpine genee/redis genee/mariadb genee/nginx node:alpine'
@@ -31,13 +37,22 @@ fi
 unset MARIADB_EXISTS
 echo "   finished."
 
+# Initialize dev
+echo "${TRY_PREFIX} Initializing dev network..."
+docker network inspect dev > /dev/null 2>&1 && DEV_EXISTS=1 || DEV_EXISTS=0
+if [ $DEV_EXISTS == 0 ]; then
+    docker network create -d overlay dev
+fi
+unset DEV_EXISTS
+echo "   finished."
+
 # Initialize Git Config
 if [ ! -f "${STACKS_DIR}/.gitconfig" ]; then
     read -p "Your git user name: " GIT_USER_NAME && \
     read -p "         and email: " GIT_USER_EMAIL && \
     GIT_USER_NAME=${GIT_USER_NAME:='Nobody'} && \
     GIT_USER_EMAIL=${GIT_USER_EMAIL:='nobody@geneegroup.com'} && \
-    printf "[user]\nname=%s\nemail=%s\n[color]\nui=auto\n" "$GIT_USER_NAME" "$GIT_USER_EMAIL" > "${STACKS_DIR}/web/.gitconfig"
+    printf "[user]\nname=%s\nemail=%s\n[color]\nui=auto\n" "$GIT_USER_NAME" "$GIT_USER_EMAIL" > "${STACKS_DIR}/.gitconfig"
 fi
 
 if [ ! -f "${STACKS_DIR}/.git-credentials" ]; then
