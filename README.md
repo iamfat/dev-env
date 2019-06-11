@@ -87,3 +87,12 @@ codesign -s GDB arm-none-eabi-gdb
 # 使用JLinkGDBServer开启远程gdb服务, 然后使用vscode连接
 JLinkGDBServer -device STM32F103CB -speed 500 -if swd -port 2331
 ```
+
+## 5. 运维工具
+1. `ssh_sessions`: 从主机登录记录`/var/log/auth.log.*`中提取ssh登录情况
+```bash
+# install via curl
+# Usage: sudo cat /var/log/auth.log | ssh_sessions [-u USER]
+#     or sudo ssh_sessions [-u USER] /var/log/auth.log
+sudo sh -c 'curl -sLo /usr/local/bin/ssh_sessions https://raw.githubusercontent.com/iamfat/dev-stacks/master/%40utils/ssh_sessions && chmod +x /usr/local/bin/ssh_sessions'
+```
