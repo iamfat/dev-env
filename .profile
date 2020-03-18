@@ -2,7 +2,7 @@
 
 eval "$(fasd --init auto)"
 
-GENEE_DATA_DIR=${GENEE_DATA_DIR:="${HOME}/Codes/data/"}
+GENEE_DATA_DIR=${GENEE_DATA_DIR:="/Volumes/Codes/data/"}
 GENEE_NODE_CONTAINER=${GENEE_NODE_CONTAINER:="node"}
 GENEE_GINI_CONTAINER=${GENEE_GINI_CONTAINER:="gini"}
 

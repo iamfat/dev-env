@@ -21,9 +21,9 @@ skip-name-resolve
 # log_error = /var/log/mysql/error.log
 # general-log-file=/var/log/mysql/general.log
 
-log-bin=mysql-bin
-binlog_format=mixed
-server-id  = 1
+#log-bin=mysql-bin
+#binlog_format=mixed
+#server-id  = 1
 
 [mysqldump]
 quick
