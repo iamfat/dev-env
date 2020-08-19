@@ -12,17 +12,21 @@ xcode-select --install
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # install homebrew caskroom
-brew tap caskroom/cask
+brew tap homebrew/cask
 ```
 
 ## 2. 安装一些支持软件
 ```bash
-# install fasd for fast directory locationing
+# 安装 fasd 用于目录快速定位, 具体可见 https://github.com/clvv/fasd
 brew install fasd
-# install necessary softwares
-brew cask install iterm2 sequel-pro docker the-unarchiver visual-studio-code
-# install fonts (optional)
-brew tap caskroom/fonts
+# 安装常用工具
+brew cask install iterm2 sequel-pro the-unarchiver
+# 安装Docker环境
+brew cask install docker
+# 安装IDE
+brew cask install visual-studio-code
+# 安装自带图标的字体, 用于优化terminal中的显示 (可选)
+brew tap homebrew/cask-fonts
 brew cask install font-hack-nerd-font
 ```
 
