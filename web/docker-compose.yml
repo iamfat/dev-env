@@ -2,29 +2,34 @@ version: '3'
 
 services:
   nginx:
-    image: genee/nginx
+    image: nginx/1.18-alpine
     hostname: nginx
-    domainname: dev
+    networks:
+      default:
+        aliases:
+          - nginx.dev
     ports:
       - 80:80/tcp
     volumes:
       - ../common/tmp:/tmp
       - ../common/localtime:/etc/localtime:ro
-      - ../..:/data:ro
-      - php:/data/php:ro
       - ./nginx/etc/nginx/default.d:/etc/nginx/default.d:ro
       - ./nginx/etc/nginx/conf.d:/etc/nginx/conf.d:ro
       - ./nginx/etc/nginx/include.d:/etc/nginx/include.d:ro
       - ./nginx/var/log/nginx:/var/log/nginx:rw
+      - gini_modules:/data/gini-modules
+      - php:/data/php
     restart: always
   gini:
     image: genee/gini-dev:alpine-39
     hostname: gini
-    domainname: dev
+    networks:
+      default:
+        aliases:
+          - gini.dev
     volumes:
       - ../common/localtime:/etc/localtime:ro
       - ../common/tmp:/tmp
-      - ../..:/data
       - ../.gitconfig:/root/.gitconfig
       - ../.git-credentials:/root/.git-credentials
       - ../.ssh:/root/.ssh
@@ -32,61 +37,35 @@ services:
       - ./gini/profile.gini.sh:/etc/profile.d/zz_gini.sh:ro
       - ./gini/composer.config.json:/usr/local/share/composer/config.json
       - ./gini/start.d:/start.d
+      - gini_modules:/data/gini-modules
       - php:/data/php
     working_dir: /data/gini-modules
     restart: always
-  node:
-    image: genee/node-dev:latest
-    hostname: node
-    domainname: dev
-    volumes:
-      - ../common/localtime:/etc/localtime:ro
-      - ../common/tmp:/tmp
-      - ../..:/data
-      - ../.gitconfig:/root/.gitconfig
-      - ../.git-credentials:/root/.git-credentials
-    working_dir: /data/node
-    command: 
-      - sh
-      - -c
-      - "while true; do sleep 5d; done"
-    restart: always
-  mariadb:
-    image: genee/mariadb:10.1
-    hostname: mariadb
-    domainname: dev
-    ports:
-      - 3306:3306/tcp
-    volumes:
-      - ../common/localtime:/etc/localtime:ro
-      - ../common/tmp:/tmp
-      - ./mariadb/etc/my.cnf.d:/etc/mysql
-      - mariadb:/var/lib/mysql
-    restart: always
   redis:
-    image: genee/redis
+    image: redis:6-alpine
     hostname: redis
-    domainname: dev
-    ports:
-      - 6379:6379/tcp
+    networks:
+      default:
+        aliases:
+          - redis.dev
     volumes:
     - ../common/localtime:/etc/localtime:ro
     - ../common/tmp:/tmp
     restart: always
 
 volumes:
-  mariadb:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=host.docker.internal,hard,nolock,rw"
-      device: ":/Volumes/Codes/data/mariadb"
   php:
     driver: local
     driver_opts:
       type: nfs
       o: "addr=host.docker.internal,hard,nolock,rw"
       device: ":/Volumes/Codes/data/php"
+  gini_modules:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=host.docker.internal,hard,nolock,rw"
+      device: ":/Volumes/Codes/data/gini-modules"
 
 networks:
   default:

@@ -43,9 +43,8 @@ git clone https://github.com/iamfat/dev-stacks "$HOME/Codes/data/@stacks"
 bash "$HOME/Codes/data/@stacks/init.bash"
 
 # 配置nfs服务器访问代码卷
-USER=$(id -un)
-GROUP=$(id -gn)
-echo "/Volumes/Codes  -alldirs -maproot=$USER:$GROUP" >> /etc/exports
+echo "/Volumes/Codes -alldirs -maproot=root:wheel" | sudo tee /etc/exports
+echo "nfs.server.mount.require_resv_port = 0" | sudo tee -a /etc/nfs.conf
 sudo nfsd restart
 
 docker-compose up -d -f web/docker-compose.yml
@@ -59,7 +58,7 @@ dn npm -v
 我们使用VSCode+gdb+JLink进行调试
 ```bash
 brew cask install gcc-arm-embedded
-brew cask install homebrew/cask-drivers/segger-jlink
+brew cask install segger-jlink
 ```
 在开发项目里需要配置VSCode的调试配置
 ```json
@@ -102,5 +101,5 @@ JLinkGDBServer -device STM32F103CB -speed 500 -if swd -port 2331
 # install via curl
 # Usage: sudo cat /var/log/auth.log | ssh_sessions [-u USER]
 #     or sudo ssh_sessions [-u USER] /var/log/auth.log
-sudo sh -c 'curl -sLo /usr/local/bin/ssh_sessions https://raw.githubusercontent.com/iamfat/dev-stacks/master/%40utils/ssh_sessions && chmod +x /usr/local/bin/ssh_sessions'
+sudo sh -c 'curl -sLo /usr/local/bin/ssh_sessions https://raw.githubusercontent.com/iamfat/dev-env/master/%40utils/ssh_sessions && chmod +x /usr/local/bin/ssh_sessions'
 ```

@@ -1,4 +1,5 @@
-/common
+/common/localtime
+/common/tmp
 .DS*
 /.gitconfig
 /.git-credentials
