@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  # MQTT Broker
+  mosquitto:
+    hostname: mosquitto.dev
+    networks:
+      default:
+        aliases:
+          - mosquitto.dev
+    image: eclipse-mosquitto:1.6
+    restart: always
+    ports:
+      - 1883:1883/tcp
+      - 8083:8083/tcp
+    volumes:
+      - ../common/tmp:/tmp
+      - ../common/localtime:/etc/localtime:ro
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+  influxdb:
+    hostname: influxdb.dev
+    networks:
+      default:
+        aliases:
+          - influxdb.dev
+    image: influxdb:alpine
+    restart: always
+    ports:
+      - 8086:8086/tcp
+    volumes:
+      - ../common/tmp:/tmp
+      - ../common/localtime:/etc/localtime:ro
+      - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+      - influxdb:/var/lib/influxdb
+    command: 
+      - influxd
+      - -config
+      - /etc/influxdb/influxdb.conf
+
+networks:
+  default:
+    external: 
+      name: dev
+
+volumes:
+  influxdb:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=host.docker.internal,hard,nolock,rw"
+      device: ":/Volumes/Codes/docker-volumes/influxdb"
