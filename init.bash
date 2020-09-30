@@ -42,10 +42,17 @@ if [ ! -f "${ENV_DIR}/.git-credentials" ]; then
 fi
 
 echo ""
-echo "Please add following line to ~/.profile if you want to access node/npm/gini/composer command from the host."
+echo "Please add following line to ~/.zshrc if you are using ZSH."
 echo ""
-echo "  source ${ENV_DIR}/.profile"
+echo "  source ${ENV_DIR}/zshrc"
 echo ""
+
+echo ""
+echo "Please add following line to ~/.bashrc if you are using Bash."
+echo ""
+echo "  source ${ENV_DIR}/bashrc"
+echo ""
+
 
 echo "${DONE_PROMPT}"
 echo ""

@@ -32,17 +32,15 @@ brew cask install font-hack-nerd-font
 
 ## 3. Web开发环境
 ```bash
+# 在APFS Container中建立一个代码专用卷, 一般系统的Container是disk1, 如果有不同则自行调整
+diskutil apfs addVolume disk1 APFSX Codes
 # 通用数据目录
-mkdir -p "/Volumes/Codes/data"
-# Gini模块目录
-mkdir -p "/Volumes/Codes/data/gini-modules"
-# Node应用目录
-mkdir -p "/Volumes/Codes/data/node"
+mkdir -p "/Volumes/Codes"
 # 容器配置目录
-git clone https://github.com/iamfat/dev-stacks "$HOME/Codes/data/@stacks"
-bash "$HOME/Codes/data/@stacks/init.bash"
+git clone https://github.com/iamfat/dev-env "$HOME/Codes/dev-env"
+bash "$HOME/Codes/dev-env/init.bash"
 
-# 配置nfs服务器访问代码卷
+# 配置nfs服务器, 让docker容器能够通过nfs volume访问
 echo "/Volumes/Codes -alldirs -maproot=root:wheel" | sudo tee /etc/exports
 echo "nfs.server.mount.require_resv_port = 0" | sudo tee -a /etc/nfs.conf
 sudo nfsd restart
