@@ -4,8 +4,7 @@ export LANG=en_US.UTF-8
 export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 
-export PATH="/usr/local/opt/node@12/bin:$PATH"
-export PATH="/usr/local/opt/openjdk/bin:$PATH"
+export PATH="/opt/homebrew/bin:/opt/homebrew/opt/openjdk@11/bin:/opt/homebrew/opt/node@12/bin:$PATH"
 
 export PKG_CONFIG_PATH="/usr/local/opt/libffi/lib/pkgconfig"
 
