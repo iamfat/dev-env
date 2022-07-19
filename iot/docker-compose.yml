@@ -8,7 +8,7 @@ services:
       default:
         aliases:
           - mosquitto.dev
-    image: eclipse-mosquitto:1.6
+    image: eclipse-mosquitto:2
     restart: always
     ports:
       - 1883:1883/tcp
@@ -25,7 +25,7 @@ services:
       default:
         aliases:
           - influxdb.dev
-    image: influxdb:alpine
+    image: influxdb:1.8.4
     restart: always
     ports:
       - 8086:8086/tcp
