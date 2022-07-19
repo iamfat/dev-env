@@ -24,8 +24,9 @@ services:
     restart: always
 
 networks:
-  dev:
+  default:
     name: dev
+    external: true
 
 volumes:
   php:

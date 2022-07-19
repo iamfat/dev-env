@@ -1,5 +1,5 @@
 CODES="/Volumes/Codes"
-DOCKER_GINI="docker run --rm -it -p 3000:3000 -v $CODES/php:/data -w /data/\$(realpath --relative-to=$CODES/php \$PWD) genee/gini:php8.0-alpine"
+DOCKER_GINI="docker run --rm -it -p 3000:3000 -v $CODES/php:/data -w /data/\$(realpath --relative-to=$CODES/php \$PWD) genee/gini:php7.4-alpine"
 alias gini="${DOCKER_GINI} gini"
 alias composer="${DOCKER_GINI} composer"
 alias php="${DOCKER_GINI} php"
