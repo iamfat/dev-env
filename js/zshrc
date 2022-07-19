@@ -1,0 +1,13 @@
+export NVM_DIR="$HOME/.nvm"
+[ -s "$BREW_PREFIX/opt/nvm/nvm.sh" ] && . "$BREW_PREFIX/opt/nvm/nvm.sh"
+[ -s "$BREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && . "$BREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm"
+
+# pnpm
+export PNPM_HOME="$HOME/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end
+
+# yarn
+YARN_BIN="$HOME/.yarn/bin"
+export PATH="$YARN_BIN:$PATH"
+# yarn end
