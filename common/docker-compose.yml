@@ -1,8 +1,8 @@
-version: '3'
+version: "3"
 
 services:
   mariadb:
-    image: mariadb:10.1
+    image: mariadb:10.6
     hostname: mariadb.dev
     networks:
       default:
@@ -14,12 +14,28 @@ services:
       - ../common/tmp:/tmp
       - ../common/localtime:/etc/localtime:ro
       - mariadb:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 83719730
+      MYSQL_USER: genee
+      MYSQL_PASSWORD: 83719730
+    restart: always
+  redis:
+    image: redis:alpine
+    hostname: redis.dev
+    networks:
+      default:
+        aliases:
+          - redis.dev
+    ports:
+      - 6379:6379/tcp
+    volumes:
+      - ../common/localtime:/etc/localtime:ro
+      - ../common/tmp:/tmp
     restart: always
 
 networks:
   default:
-    external: 
-      name: dev
+    name: dev
 
 volumes:
   mariadb:
