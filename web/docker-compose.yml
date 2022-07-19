@@ -1,27 +1,8 @@
 version: '3'
 
 services:
-  nginx:
-    image: nginx/1.18-alpine
-    hostname: nginx
-    networks:
-      default:
-        aliases:
-          - nginx.dev
-    ports:
-      - 80:80/tcp
-    volumes:
-      - ../common/tmp:/tmp
-      - ../common/localtime:/etc/localtime:ro
-      - ./nginx/etc/nginx/default.d:/etc/nginx/default.d:ro
-      - ./nginx/etc/nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./nginx/etc/nginx/include.d:/etc/nginx/include.d:ro
-      - ./nginx/var/log/nginx:/var/log/nginx:rw
-      - gini_modules:/data/gini-modules
-      - php:/data/php
-    restart: always
   gini:
-    image: genee/gini-dev:alpine-39
+    image: genee/gini:php7.4-alpine
     hostname: gini
     networks:
       default:
@@ -33,25 +14,18 @@ services:
       - ../.gitconfig:/root/.gitconfig
       - ../.git-credentials:/root/.git-credentials
       - ../.ssh:/root/.ssh
-      - ./gini/php7.fpm.pool.www.conf:/etc/php7/php-fpm.d/www.conf:ro
       - ./gini/profile.gini.sh:/etc/profile.d/zz_gini.sh:ro
       - ./gini/composer.config.json:/usr/local/share/composer/config.json
       - ./gini/start.d:/start.d
-      - gini_modules:/data/gini-modules
-      - php:/data/php
+      - ./gini/composer-cache:/usr/local/share/composer/cache
+      - ./gini/composer-vendor:/usr/local/share/composer/vendor
+      - php:/data
     working_dir: /data/gini-modules
     restart: always
-  redis:
-    image: redis:6-alpine
-    hostname: redis
-    networks:
-      default:
-        aliases:
-          - redis.dev
-    volumes:
-    - ../common/localtime:/etc/localtime:ro
-    - ../common/tmp:/tmp
-    restart: always
+
+networks:
+  dev:
+    name: dev
 
 volumes:
   php:
@@ -59,15 +33,5 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=host.docker.internal,hard,nolock,rw"
-      device: ":/Volumes/Codes/data/php"
-  gini_modules:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=host.docker.internal,hard,nolock,rw"
-      device: ":/Volumes/Codes/data/gini-modules"
+      device: ":/Volumes/Codes/php"
 
-networks:
-  default:
-    external: 
-      name: dev
