@@ -7,7 +7,9 @@ eval "$(fasd --init auto)"
 BREW_PREFIX=$(brew --prefix)
 export PATH="$BREW_PREFIX/sbin:$PATH"
 
-# source java/zshrc
-# source js/zshrc
-# source php/zshrc
+ENV_DIR=$(dirname ${(%):-%N})
+
+# source $ENV_DIR/java/zshrc
+# source $ENV_DIR/js/zshrc
+# source $ENV_DIR/php/zshrc
 
