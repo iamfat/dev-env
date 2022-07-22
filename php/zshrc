@@ -1,6 +1,16 @@
+ENV_DIR=$(dirname ${(%):-%N})
 CODES="/Volumes/Codes"
-DOCKER_GINI="docker run --rm -it -p 3000:3000 -v $CODES/php:/data -w /data/\$(realpath --relative-to=$CODES/php \$PWD) genee/gini:php7.4-alpine"
-alias gini="${DOCKER_GINI} gini"
-alias composer="${DOCKER_GINI} composer"
-alias php="${DOCKER_GINI} php"
-alias phpunit="${DOCKER_GINI} vendor/bin/phpunit"
+
+function __php_run() {
+    docker run --rm -it -p 3000:3000 \
+        -v $CODES/php:/data \
+        -v $ENV_DIR/gini/composer-cache:/usr/local/share/composer/cache \
+        -v $ENV_DIR/gini/composer-vendor:/usr/local/share/composer/vendor \
+        -v $ENV_DIR/gini/profile.gini.sh:/etc/profile.d/zz_gini.sh \
+        -w /data/$(realpath --relative-to=$CODES/php $PWD) genee/gini:php7.4-alpine "$@"
+}
+
+alias gini="__php_run /data/gini-modules/gini/bin/gini"
+alias composer="__php_run composer"
+alias php="__php_run php"
+alias phpunit="__php_run vendor/bin/phpunit"
