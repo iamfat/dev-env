@@ -4,6 +4,7 @@ CODES="/Volumes/Codes"
 function __php81_run() {
     local work_dir=$(realpath --relative-to=$CODES/php $PWD)
     docker run --rm -it -p 3000:3000 \
+        --network name=dev \
         -v $CODES/php:/data \
         -v $CODES/php/$work_dir/vendor81:/data/$work_dir/vendor \
         -v $ENV_DIR/gini/composer-cache81:/usr/local/share/composer/cache \
@@ -15,6 +16,7 @@ function __php81_run() {
 function __php8_run() {
     local work_dir=$(realpath --relative-to=$CODES/php $PWD)
     docker run --rm -it -p 3000:3000 \
+        --network name=dev \
         -v $CODES/php:/data \
         -v $CODES/php/$work_dir/vendor8:/data/$work_dir/vendor \
         -v $ENV_DIR/gini/composer-cache8:/usr/local/share/composer/cache \
@@ -26,6 +28,7 @@ function __php8_run() {
 function __php7_run() {
     local work_dir=$(realpath --relative-to=$CODES/php $PWD)
     docker run --rm -it -p 3000:3000 \
+        --network name=dev \
         -v $CODES/php:/data \
         -v $CODES/php/$work_dir/vendor7:/data/$work_dir/vendor \
         -v $ENV_DIR/gini/composer-cache7:/usr/local/share/composer/cache \
