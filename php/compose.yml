@@ -9,8 +9,8 @@ services:
         aliases:
           - gini.dev
     volumes:
-      - ../common/localtime:/etc/localtime:ro
-      - ../common/tmp:/tmp
+      - /etc/localtime:/etc/localtime:ro
+      - /tmp:/tmp
       - ../.gitconfig:/root/.gitconfig
       - ../.git-credentials:/root/.git-credentials
       - ../.ssh:/root/.ssh
@@ -19,7 +19,7 @@ services:
       - ./gini/start.d:/start.d
       - ./gini/composer-cache:/usr/local/share/composer/cache
       - ./gini/composer-vendor:/usr/local/share/composer/vendor
-      - php:/data
+      - /Volumes/Codes/php:/data
     working_dir: /data/gini-modules
     restart: always
 
@@ -27,12 +27,4 @@ networks:
   default:
     name: dev
     external: true
-
-volumes:
-  php:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=host.docker.internal,hard,nolock,rw"
-      device: ":/Volumes/Codes/php"
 

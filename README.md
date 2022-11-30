@@ -47,7 +47,7 @@ git clone https://github.com/iamfat/dev-env "$HOME/Codes/dev-env"
 ```bash
 # 终端美化
 brew tap homebrew/cask-fonts
-brew install --cask font-hack-nerd-font
+brew install --cask font-jetbrains-mono-nerd-font
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 # 手动设置iTerm的字体为Hack Nerd, 用于进行带图标的字体显示
 cat <<EOF >> ~/.oh-my-zsh/custom/themes/genee.zsh-theme
@@ -64,12 +64,13 @@ sed -e 's/ZSH_THEME=.*/ZSH_THEME=genee/g' ~/.zshrc
 
 # 安装 fasd 用于目录快速定位, 具体可见 https://github.com/clvv/fasd
 brew install fasd
-# 安装Docker环境
-brew install --cask docker
-# 配置nfs服务器, 让Docker容器能够通过NFS访问开发卷
-echo "/Volumes/Codes -alldirs -maproot=root:wheel" | sudo tee /etc/exports
-echo "nfs.server.mount.require_resv_port = 0" | sudo tee -a /etc/nfs.conf
-sudo nfsd restart
+
+# # 安装Docker环境
+# brew install --cask docker
+# # 配置nfs服务器, 让Docker容器能够通过NFS访问开发卷
+# echo "/Volumes/Codes -alldirs -maproot=root:wheel" | sudo tee /etc/exports
+# echo "nfs.server.mount.require_resv_port = 0" | sudo tee -a /etc/nfs.conf
+# sudo nfsd restart
 
 # 安装IDE
 brew install --cask visual-studio-code
@@ -78,7 +79,12 @@ brew install --cask visual-studio-code
 ## 3. 初始化开发环境
 
 ```bash
-bash "$HOME/Codes/dev-env/init.bash"
+# 如果你用ZSH
+echo "source /Volume/Codes/zshrc" >> ~/.zshrc
+
+# 如果你用BASH
+echo "source /Volume/Codes/bashrc" >> ~/.bashrc
+
 ```
 
 ## 4. 嵌入式安装环境

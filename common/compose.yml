@@ -2,8 +2,7 @@ version: "3"
 
 services:
   mariadb:
-    image: mariadb:10.6
-    hostname: mariadb.dev
+    image: mariadb:10.9
     networks:
       default:
         aliases:
@@ -11,17 +10,18 @@ services:
     ports:
       - 3306:3306/tcp
     volumes:
-      - ../common/tmp:/tmp
-      - ../common/localtime:/etc/localtime:ro
+      - /tmp:/tmp
+      - /etc/localtime:/etc/localtime:ro
       - mariadb:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: 83719730
       MYSQL_USER: genee
       MYSQL_PASSWORD: 83719730
     restart: always
+    privileged: true
+    command: --port 3306
   redis:
     image: redis:alpine
-    hostname: redis.dev
     networks:
       default:
         aliases:
@@ -29,18 +29,15 @@ services:
     ports:
       - 6379:6379/tcp
     volumes:
-      - ../common/localtime:/etc/localtime:ro
-      - ../common/tmp:/tmp
+      - /etc/localtime:/etc/localtime:ro
+      - /tmp:/tmp
     restart: always
 
 networks:
   default:
     name: dev
+    external: true
 
 volumes:
   mariadb:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=host.docker.internal,hard,nolock,rw"
-      device: ":/Volumes/Codes/docker-volumes/mariadb"
+    external: true

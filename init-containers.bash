@@ -16,7 +16,6 @@ echo "   finished."
 # Initialize Some Files for Container 
 echo "${TRY_PREFIX} Initializing Some Files for Container..."
 [ -d "${ENV_DIR}/.ssh" ] || mkdir -p "${ENV_DIR}/.ssh"
-[ -d "${ENV_DIR}/web/nginx/var/log/nginx" ] || mkdir -p "${ENV_DIR}/web/nginx/var/log/nginx"
 echo "   finished."
 
 # Initialize Network
@@ -40,19 +39,3 @@ fi
 if [ ! -f "${ENV_DIR}/.git-credentials" ]; then
     touch "${ENV_DIR}/.git-credentials"
 fi
-
-echo ""
-echo "Please add following line to ~/.zshrc if you are using ZSH."
-echo ""
-echo "  source ${ENV_DIR}/zshrc"
-echo ""
-
-echo ""
-echo "Please add following line to ~/.bashrc if you are using Bash."
-echo ""
-echo "  source ${ENV_DIR}/bashrc"
-echo ""
-
-
-echo "${DONE_PROMPT}"
-echo ""

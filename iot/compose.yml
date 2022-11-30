@@ -30,8 +30,8 @@ services:
     ports:
       - 8086:8086/tcp
     volumes:
-      - ../common/tmp:/tmp
-      - ../common/localtime:/etc/localtime:ro
+      - /tmp:/tmp
+      - /etc/localtime:/etc/localtime:ro
       - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
       - influxdb:/var/lib/influxdb
     command: 
@@ -41,13 +41,9 @@ services:
 
 networks:
   default:
-    external: 
-      name: dev
+    external: true
+    name: dev
 
 volumes:
   influxdb:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=host.docker.internal,hard,nolock,rw"
-      device: ":/Volumes/Codes/docker-volumes/influxdb"
+    external: true
