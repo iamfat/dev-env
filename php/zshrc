@@ -1,4 +1,3 @@
-ENV_DIR=$(dirname ${(%):-%N})
 CODES="/Volumes/Codes"
 
 function __php81_run() {

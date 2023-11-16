@@ -1,8 +1,6 @@
-version: "3"
-
 services:
   mariadb:
-    image: mariadb:10.9
+    image: mariadb:10
     networks:
       default:
         aliases:
@@ -32,6 +30,17 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /tmp:/tmp
     restart: always
+  beanstalkd:
+    image: genee/beanstalkd
+    networks:
+      default:
+        aliases:
+          - beanstalkd.dev
+    ports:
+      - 11300:11300/tcp
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
 
 networks:
   default:
@@ -40,4 +49,9 @@ networks:
 
 volumes:
   mariadb:
-    external: true
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=host.docker.internal,hard,nolock,rw"
+      device: ":/Volumes/Codes/container-volumes/mariadb"
+

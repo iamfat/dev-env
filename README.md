@@ -32,10 +32,10 @@ git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git
 brew install --cask iterm2
 
 # 在APFS Container中建立一个代码专用卷, 一般系统的Container是disk1, 如果有不同则自行调整
-diskutil list internal|grep "APFS Container Scheme"
+DISK=$(diskutil list internal|grep "APFS Container Scheme"|cut -w f9)
 # 会得到 0:      APFS Container Scheme -                      +245.1 GB   disk1 这样的输出
 # 最后一个单词就是盘符
-diskutil apfs addVolume disk1 APFSX Codes
+diskutil apfs addVolume "$DISK" APFSX Codes
 # 通用数据目录
 mkdir -p "/Volumes/Codes"
 # 容器配置目录
@@ -48,9 +48,10 @@ git clone https://github.com/iamfat/dev-env "$HOME/Codes/dev-env"
 # 终端美化
 brew tap homebrew/cask-fonts
 brew install --cask font-jetbrains-mono-nerd-font
+
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 # 手动设置iTerm的字体为Hack Nerd, 用于进行带图标的字体显示
-cat <<EOF >> ~/.oh-my-zsh/custom/themes/genee.zsh-theme
+cat <<'EOF' > ~/.oh-my-zsh/custom/themes/genee.zsh-theme
 PROMPT="%(?:%{$fg_bold[green]%}:%{$fg_bold[red]%})"
 PROMPT+=' %{$fg[cyan]%}  %c%{$reset_color%} $(git_prompt_info)'
 
@@ -62,15 +63,19 @@ EOF
 
 sed -e 's/ZSH_THEME=.*/ZSH_THEME=genee/g' ~/.zshrc
 
-# 安装 fasd 用于目录快速定位, 具体可见 https://github.com/clvv/fasd
-brew install fasd
+# 安装 zoxide 用于目录快速定位
+brew install zoxide
 
-# # 安装Docker环境
-# brew install --cask docker
-# # 配置nfs服务器, 让Docker容器能够通过NFS访问开发卷
-# echo "/Volumes/Codes -alldirs -maproot=root:wheel" | sudo tee /etc/exports
-# echo "nfs.server.mount.require_resv_port = 0" | sudo tee -a /etc/nfs.conf
-# sudo nfsd restart
+# 安装 nodejs 环境
+brew install fnm
+
+# 安装Docker环境
+brew install --cask docker
+
+# 配置nfs服务器, 让Docker容器能够通过NFS访问开发卷
+echo "/Volumes/Codes -alldirs -maproot=root:wheel" | sudo tee /etc/exports
+echo "nfs.server.mount.require_resv_port = 0" | sudo tee -a /etc/nfs.conf
+sudo nfsd restart
 
 # 安装IDE
 brew install --cask visual-studio-code
