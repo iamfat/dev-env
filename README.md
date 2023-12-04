@@ -33,13 +33,7 @@ brew install --cask iterm2
 
 # 在APFS Container中建立一个代码专用卷, 一般系统的Container是disk1, 如果有不同则自行调整
 DISK=$(diskutil list internal|grep "APFS Container Scheme"|cut -w f9)
-# 会得到 0:      APFS Container Scheme -                      +245.1 GB   disk1 这样的输出
-# 最后一个单词就是盘符
 diskutil apfs addVolume "$DISK" APFSX Codes
-# 通用数据目录
-mkdir -p "/Volumes/Codes"
-# 容器配置目录
-git clone https://github.com/iamfat/dev-env "$HOME/Codes/dev-env"
 ```
 
 ## 2. 使用iTerm2安装一些支持软件
@@ -84,12 +78,10 @@ brew install --cask visual-studio-code
 ## 3. 初始化开发环境
 
 ```bash
-# 如果你用ZSH
-echo "source /Volume/Codes/zshrc" >> ~/.zshrc
-
-# 如果你用BASH
-echo "source /Volume/Codes/bashrc" >> ~/.bashrc
-
+# 克隆开发环境的配置到dev-env
+git clone https://github.com/iamfat/dev-env "$HOME/Documents/dev-env"
+echo "source $HOME/Documents/dev-env/zshrc" >> ~/.zshrc
+# 关闭终端再重新打开终端来让终端生效
 ```
 
 ## 4. 嵌入式安装环境
