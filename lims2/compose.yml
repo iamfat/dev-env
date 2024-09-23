@@ -1,0 +1,73 @@
+services:
+  php:
+    image: docker.genee.cn/php:7.4-alpine
+    networks:
+      default:
+        aliases:
+          - lims2.dev
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /tmp:/tmp
+      - ../.gitconfig:/root/.gitconfig
+      - ../.git-credentials:/root/.git-credentials
+      - ../.ssh:/root/.ssh
+      - ./php7/php.ini:/etc/php7/php.ini:ro
+      - ./php7/fpm.www.conf:/etc/php7/php-fpm.d/www.conf:ro
+      - /Volumes/Codes/php/lims2:/var/lib/lims2
+    working_dir: /var/lib/lims2
+    restart: always
+  gini:
+    image: docker.genee.cn/php:8.3-alpine
+    networks:
+      default:
+        aliases:
+          - gini.dev
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /tmp:/tmp
+      - ../.gitconfig:/root/.gitconfig
+      - ../.git-credentials:/root/.git-credentials
+      - ../.ssh:/root/.ssh
+      - ./php83/php.ini:/etc/php83/php.ini:ro
+      - ./php83/fpm.www.conf:/etc/php83/php-fpm.d/www.conf:ro
+      - ./gini/profile.gini.sh:/etc/profile.d/zz_gini.sh:ro
+      - ./gini/composer.config.json:/usr/local/share/composer/config.json
+      - ./gini/start.d:/start.d
+      - ./gini/composer-cache:/usr/local/share/composer/cache
+      - ./gini/composer-vendor:/usr/local/share/composer/vendor
+      - /Volumes/Codes/php/gini-modules:/data/gini-modules
+    working_dir: /data/gini-modules
+    restart: always
+  nginx:
+    image: nginx:mainline-alpine
+    networks:
+      default:
+        aliases:
+          - lims2.dev
+    ports:
+      - 80:80/tcp
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /tmp:/tmp
+      - ../.gitconfig:/root/.gitconfig
+      - ../.git-credentials:/root/.git-credentials
+      - ../.ssh:/root/.ssh
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - /Volumes/Codes/php/lims2:/var/lib/lims2:ro  
+      - /Volumes/Codes/php/gini-modules:/data/gini-modules:ro  
+    restart: always 
+
+networks:
+  default:
+    name: dev
+    external: true
+
+# volumes:
+#   lims2:
+#     driver: local
+#     driver_opts:
+#       type: nfs
+#       o: "addr=host.docker.internal,hard,nolock,rw"
+#       device: ":/Volumes/Codes/php/lims2"
+
