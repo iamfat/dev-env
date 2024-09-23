@@ -1,52 +1,19 @@
 CODES="/Volumes/Codes"
 
-function __php81_run() {
+function __php_run() {
     local work_dir=$(realpath --relative-to=$CODES/php $PWD)
-    docker run --rm -it -p 3000:3000 \
+    docker run --rm -it \
         --network name=dev \
-        -v $CODES/php:/data \
-        -v $CODES/php/$work_dir/vendor81:/data/$work_dir/vendor \
-        -v $ENV_DIR/gini/composer-cache81:/usr/local/share/composer/cache \
-        -v $ENV_DIR/gini/composer-vendor81:/usr/local/share/composer/vendor \
-        -v $ENV_DIR/gini/profile.gini.sh:/etc/profile.d/zz_gini.sh \
-        -w /data/$work_dir genee/gini:edge-php8.1-alpine "$@"
+        -v $CODES/php:/opt/php \
+        -v $CODES/php/$work_dir/vendor:/data/$work_dir/vendor \
+        -v $ENV_DIR/composer-cache:/usr/local/share/composer/cache \
+        -v $ENV_DIR/composer-vendor:/usr/local/share/composer/vendor \
+        -v $ENV_DIR/profile.gini.sh:/etc/profile.d/zz_gini.sh \
+        -w /opt/php/$work_dir genee/php:8.3-alpine "$@"
 }
 
-function __php8_run() {
-    local work_dir=$(realpath --relative-to=$CODES/php $PWD)
-    docker run --rm -it -p 3000:3000 \
-        --network name=dev \
-        -v $CODES/php:/data \
-        -v $CODES/php/$work_dir/vendor8:/data/$work_dir/vendor \
-        -v $ENV_DIR/gini/composer-cache8:/usr/local/share/composer/cache \
-        -v $ENV_DIR/gini/composer-vendor8:/usr/local/share/composer/vendor \
-        -v $ENV_DIR/gini/profile.gini.sh:/etc/profile.d/zz_gini.sh \
-        -w /data/$work_dir genee/gini:edge-php8-alpine "$@"
-}
-
-function __php7_run() {
-    local work_dir=$(realpath --relative-to=$CODES/php $PWD)
-    docker run --rm -it -p 3000:3000 \
-        --network name=dev \
-        -v $CODES/php:/data \
-        -v $CODES/php/$work_dir/vendor7:/data/$work_dir/vendor \
-        -v $ENV_DIR/gini/composer-cache7:/usr/local/share/composer/cache \
-        -v $ENV_DIR/gini/composer-vendor7:/usr/local/share/composer/vendor \
-        -v $ENV_DIR/gini/profile.gini.sh:/etc/profile.d/zz_gini.sh \
-        -w /data/$work_dir genee/gini:edge-php7.4-alpine "$@"
-}
-
-alias gini7="__php7_run /data/gini-modules/gini/bin/gini"
-alias composer7="__php7_run composer"
-alias php7="__php7_run php"
-alias phpunit7="__php7_run vendor/bin/phpunit"
-
-alias gini8="__php8_run /data/gini-modules/gini/bin/gini"
-alias composer8="__php8_run composer"
-alias php8="__php8_run php"
-alias phpunit8="__php8_run vendor/bin/phpunit"
-
-alias gini81="__php81_run /data/gini-modules/gini/bin/gini"
-alias composer81="__php81_run composer"
-alias php81="__php81_run php"
-alias phpunit81="__php81_run vendor/bin/phpunit"
+alias gini="__php_run /opt/php/gini-modules/gini/bin/gini"
+alias composer="__php_run composer"
+alias php="__php_run php"
+alias phpunit="__php_run vendor/bin/phpunit"
+alias phpsh="__php_run bash"

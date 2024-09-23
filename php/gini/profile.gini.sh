@@ -1,6 +1,6 @@
 export GINI_ENV=development
-export TERM=xterm-color
-PATH="/data/gini-modules/gini/bin:/usr/local/share/composer/vendor/bin:$PATH"
+export PATH="/opt/php/gini-modules/gini/bin:$PATH"
+export GINI_MODULE_BASE_PATH="/opt/php/gini-modules"
 export LESSCHARSET=utf-8
 
 if type __git_ps1 >/dev/null 2>&1; then

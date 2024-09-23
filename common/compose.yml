@@ -31,7 +31,7 @@ services:
       - /tmp:/tmp
     restart: always
   beanstalkd:
-    image: genee/beanstalkd
+    image: docker.genee.cn/beanstalkd
     networks:
       default:
         aliases:

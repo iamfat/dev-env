@@ -17,7 +17,7 @@ export CONTAINER_CLI=docker
 
 ENV_DIR=$(dirname ${(%):-%N})
 
-source $ENV_DIR/java/zshrc
+source $ENV_DIR/android/zshrc
 source $ENV_DIR/js/zshrc
 source $ENV_DIR/php/zshrc
 source $ENV_DIR/rust/zshrc
