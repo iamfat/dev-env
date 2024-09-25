@@ -1,0 +1,18 @@
+alias vpnssh="ssh -o ProxyCommand='nc -x localhost:1080 %h %p'"
+
+function easyconnect() {
+    local VERSION
+    if [ x$1 = x ]; then VERSION=vncless; else VERSION="$1-vncless"; fi
+    docker run --rm --device /dev/net/tun --cap-add NET_ADMIN -ti \
+        -e DISPLAY=host.docker.internal:0 -e EXIT=1 -e TYPE=x11 -e DISABLE_PKG_VERSION_XML=1 \
+        -v $HOME/.ecdata:/root --sysctl net.ipv4.conf.default.route_localnet=1 \
+        -p 127.0.0.1:1080:1080 hagb/docker-easyconnect:$VERSION
+}
+
+function atrust() {
+    local VERSION
+    if [ x$1 = x ]; then VERSION=vncless; else VERSION="$1-vncless"; fi
+    docker run --rm --device /dev/net/tun --cap-add NET_ADMIN -ti \
+        -e LC_ALL=zh_CN.UTF-8 -e DISPLAY=host.docker.internal:0 -e EXIT=1 -e TYPE=x11 \
+        -v $HOME/.atrust-data:/root --sysctl net.ipv4.conf.default.route_localnet=1 -p 1080:1080 hagb/docker-atrust:$VERSION
+}

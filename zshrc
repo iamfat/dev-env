@@ -21,4 +21,4 @@ source $ENV_DIR/android/zshrc
 source $ENV_DIR/js/zshrc
 source $ENV_DIR/php/zshrc
 source $ENV_DIR/rust/zshrc
-
+source $ENV_DIR/vpn/zshrc

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>cn.genee.X11Forward</string>
+        <key>Disabled</key>
+        <false />
+        <key>ProgramArguments</key>
+        <array>
+            <string>/bin/sh</string>
+            <string>-c</string>
+            <string>/opt/homebrew/bin/socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\"</string>
+        </array>
+        <key>KeepAlive</key>
+        <dict>
+            <key>Crashed</key>
+            <true />
+        </dict>
+        <key>RunAtLoad</key>
+        <true />
+    </dict>
+</plist>
