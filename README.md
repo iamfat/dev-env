@@ -21,28 +21,26 @@ git clone --depth=1 https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/install.gi
 rm -rf /tmp/brew-install
 
 # 在APFS Container中建立一个代码专用卷, 一般系统的Container是disk1, 如果有不同则自行调整
-DISK=$(diskutil list internal|grep "APFS Container Scheme"|cut -w f9)
+DISK=$(diskutil list internal|grep "APFS Container Scheme"|awk '{print $8}')
 diskutil apfs addVolume "$DISK" APFSX Codes
 
 # 安装 zoxide 用于目录快速定位
 brew install zoxide
 
-# 安装 nodejs 环境
-brew install fnm
-
 # 安装Docker环境
 brew install --cask docker
 
-# 配置nfs服务器, 让Docker容器能够通过NFS访问开发卷
-echo "/Volumes/Codes -alldirs -maproot=root:wheel" | sudo tee /etc/exports
-echo "nfs.server.mount.require_resv_port = 0" | sudo tee -a /etc/nfs.conf
-sudo nfsd restart
-
-# 安装IDE
-brew install --cask visual-studio-code
-
 # 安装iTerm2作为命令行终端
 brew install --cask iterm2
+
+# 安装IDE
+brew install --cask cursor
+
+# 安装Redis/Mariadb/Beanstalkd
+brew install redis mariadb beanstalkd
+brew services start redis
+brew services start mariadb
+brew services start beanstalkd
 
 # 克隆开发环境的配置到dev-env
 git clone https://github.com/iamfat/dev-env "$HOME/Documents/dev-env"
@@ -76,3 +74,5 @@ sed -e 's/ZSH_THEME=.*/ZSH_THEME=genee/g' ~/.zshrc
 ## 3. 其他
 1. [Android开发](./android/README.md)
 2. [嵌入式开发](./embedded-env.md)
+3. [Nodejs开发](./js/README.md)
+4. [PHP开发](./php/README.md)

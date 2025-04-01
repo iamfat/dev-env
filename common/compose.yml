@@ -18,29 +18,6 @@ services:
     restart: always
     privileged: true
     command: --port 3306
-  redis:
-    image: redis:alpine
-    networks:
-      default:
-        aliases:
-          - redis.dev
-    ports:
-      - 6379:6379/tcp
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /tmp:/tmp
-    restart: always
-  beanstalkd:
-    image: docker.genee.cn/beanstalkd
-    networks:
-      default:
-        aliases:
-          - beanstalkd.dev
-    ports:
-      - 11300:11300/tcp
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-    restart: always
 
 networks:
   default:

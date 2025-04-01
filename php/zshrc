@@ -6,10 +6,11 @@ function __php_run() {
         --network name=dev \
         -v $CODES/php:/opt/php \
         -v $CODES/php/$work_dir/vendor:/data/$work_dir/vendor \
-        -v $ENV_DIR/composer-cache:/usr/local/share/composer/cache \
-        -v $ENV_DIR/composer-vendor:/usr/local/share/composer/vendor \
-        -v $ENV_DIR/profile.gini.sh:/etc/profile.d/zz_gini.sh \
-        -w /opt/php/$work_dir genee/php:8.3-alpine "$@"
+        -v $ENV_DIR/php/composer-cache:/usr/local/share/composer/cache \
+        -v $ENV_DIR/php/composer-vendor:/usr/local/share/composer/vendor \
+        -v $ENV_DIR/php/composer.config.json:/usr/local/share/composer/config.json \
+        -v $ENV_DIR/php/gini/profile.gini.sh:/etc/profile.d/zz_gini.sh \
+        -w /opt/php/$work_dir docker.genee.cn/php:8.3-alpine "$@"
 }
 
 alias gini="__php_run /opt/php/gini-modules/gini/bin/gini"
